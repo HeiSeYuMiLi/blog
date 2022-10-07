@@ -11,6 +11,7 @@ categories = [
     "syntax",
 ]
 aliases = ["migrate-from-jekyl"]
+image = "pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg"
 +++
 
 C++20 引入了[模块](https://en.cppreference.com/w/cpp/language/modules "Module")，这是一种新式解决方案，可将 C++ 库和程序转换为组件。  
