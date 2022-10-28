@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Example Site</title>
+        <link>https://blog-c1g.pages.dev/</link>
+        <description>Recent content on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-CN</language>
+        <lastBuildDate>Fri, 07 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://blog-c1g.pages.dev/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>函数指针和std::function</title>
+        <link>https://blog-c1g.pages.dev/p/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%92%8Cstdfunction/</link>
+        <pubDate>Fri, 07 Oct 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog-c1g.pages.dev/p/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%92%8Cstdfunction/</guid>
+        <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;
+&lt;h3 id=&#34;函数指针&#34;&gt;函数指针&lt;/h3&gt;
+&lt;p&gt;使用指针指向内存中的一段代码，就是&lt;strong&gt;函数指针&lt;/strong&gt;：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;#include&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;bool compare(int a, int b) {&lt;br&gt;
+return a &amp;gt; b;&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;void print(int a, int b,bool (*p)(int,int)) {&lt;br&gt;
+std::cout &amp;laquo; p(a,b) &amp;laquo; std::endl;&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;int main() {&lt;br&gt;
+bool (*p)(int,int) = compare;&lt;br&gt;
+print(1, 2, p);&lt;br&gt;
+return 0;&lt;br&gt;
+}&lt;br&gt;
+上面的实例中，定义了一个函数指针p，它指向函数compare，函数print通过函数指针p回调了compare。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;stdfunction&#34;&gt;std::function&lt;/h3&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://en.cppreference.com/w/cpp/utility/functional/function&#34;  title=&#34;std::function - cppreference.com&#34;
+     target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;std::function&lt;/a&gt;是一个函数包装模板，用于表示各种可调用对象。std::function对象可被拷贝和转移，并且可以使用指定的调用特征来直接调用目标元素。当std::function对象未包裹任何实际的可调用元素，调用该std::function对象将抛出std::bad_function_call异常。&lt;/p&gt;
+&lt;p&gt;用std::function改写上面的例子：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;#include&lt;!-- raw HTML omitted --&gt;&lt;br&gt;
+#include&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;bool compare(int a, int b) {&lt;br&gt;
+return a &amp;gt; b;&lt;br&gt;
+}&lt;/p&gt;
+&lt;p&gt;void print(int a, int b,std::function&amp;lt;bool(int,int)&amp;gt; p) {&lt;br&gt;
+std::cout &amp;laquo; p(a,b) &amp;laquo; std::endl;&lt;br&gt;
+}&lt;br&gt;
+int main() {&lt;br&gt;
+std::function&amp;lt;bool(int, int)&amp;gt; p = compare;&lt;br&gt;
+print(1, 2, p);&lt;br&gt;
+return 0;&lt;br&gt;
+}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;区别&#34;&gt;区别&lt;/h3&gt;
+&lt;p&gt;那么，既然有函数指针，为什么还要搞一个std::function呢&lt;br&gt;
+函数指针的作用就是把一段代码当作变量传递，即&lt;strong&gt;回调函数&lt;/strong&gt;。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Custom Test Page</title>
+        <link>https://blog-c1g.pages.dev/p/custom-test-page/</link>
+        <pubDate>Thu, 06 Oct 2022 00:00:00 +0000</pubDate>
+        
+        <guid>https://blog-c1g.pages.dev/p/custom-test-page/</guid>
+        <description>&lt;img src="https://blog-c1g.pages.dev/pawel-czerwinski-8uZPynIu-rQ-unsplash.jpg" alt="Featured image of post Custom Test Page" /&gt;&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;
+&lt;h2 id=&#34;headings&#34;&gt;Headings&lt;/h2&gt;
+&lt;p&gt;The following HTML &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt;—&lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt; elements represent six levels of section headings. &lt;code&gt;&amp;lt;h1&amp;gt;&lt;/code&gt; is the highest section level while &lt;code&gt;&amp;lt;h6&amp;gt;&lt;/code&gt; is the lowest.&lt;/p&gt;
+&lt;h1 id=&#34;h1&#34;&gt;H1&lt;/h1&gt;
+&lt;h2 id=&#34;h2&#34;&gt;H2&lt;/h2&gt;
+&lt;h3 id=&#34;h3&#34;&gt;H3&lt;/h3&gt;
+&lt;h4 id=&#34;h4&#34;&gt;H4&lt;/h4&gt;
+&lt;h5 id=&#34;h5&#34;&gt;H5&lt;/h5&gt;
+&lt;h6 id=&#34;h6&#34;&gt;H6&lt;/h6&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
