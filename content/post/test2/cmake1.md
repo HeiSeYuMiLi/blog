@@ -40,10 +40,10 @@ g++ main.cpp -o test
 ## gcc/g++ 创建库  
 
 有目录test1内结构如下  
-├── main.cpp$~~~~~~~~~~~~~~~~~~~~$#源文件，包含main函数  
-├── sub$~~~~~~~~~~~~~~~~~~~~~~~~~~~~$#子目录    
- └── print.h$~~~~~~~~~~~~~~~~~~~~~$#子目录头文件  
- └── print.cpp$~~~~~~~~~~~~~~~~~$#子目录源文件   
+├── main.cpp　　　　　　　#源文件，包含main函数  
+├── sub　　　　　　　　　#子目录    
+ └── print.h　　　　　　　#子目录头文件  
+ └── print.cpp　　　　　　#子目录源文件   
 
 
 print.h中的内容如下  
@@ -143,12 +143,12 @@ target_link_libraries(main print)
 ```
 
 当前目录结构如下  
-├── CMakeLists.txt    #父目录的CMakeList.txt  
-├── main.cpp    #源文件，包含main函数  
-├── sub    #子目录    
- └── CMakeLists.txt    #子目录的CMakeLists.txt  
- └── print.h    #子目录头文件  
- └── print.cpp    #子目录源文件  
+├── CMakeLists.txt　　　　　　#父目录的CMakeList.txt  
+├── main.cpp　　　　　　　　#源文件，包含main函数  
+├── sub　　　　　　　　　　#子目录    
+ └── CMakeLists.txt　　　　#子目录的CMakeLists.txt  
+ └── print.h　　　　　　　#子目录头文件  
+ └── print.cpp　　　　　　#子目录源文件  
 
 其中，add_library(print STATIC print.cpp)的含义是将指定的源文件print.cpp生成链接文件，然后添加到工程中。  
 命令格式  
@@ -182,7 +182,7 @@ AFTER或BEFORE选项说明将指定目录添加到列表的前面或者后面。
 SYSTEM  
 把指定目录当成系统的搜索目录。  
 ```
-在上面的例子中，如果不使用include_directories包含子目录sub,直接在main.cpp里面包含"test.h"，执行cmake --build .，会提示找不到头文件的错误。  
+在上面的例子中，如果不使用include_directories包含子目录sub,直接在main.cpp里面包含"print.h"，执行cmake --build .，会提示找不到头文件的错误。  
 ```
 
 
