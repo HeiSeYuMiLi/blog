@@ -18,54 +18,33 @@ aliases = ["create-library"]
 image = ""
 +++  
 
-## 1.构建一个最简单的项目
 
-使用cmake构建一个最简单的项目莫过于将一个源文件构建成一个可执行文件。有源文件如下：
+编译一个文件，一共有四个步骤：预处理，编译，汇编，链接。  
+
+预处理：将文件包含的头文件和宏定义等展开或替换。  
+编译：将预处理后的文件翻译成更底层的`汇编语言`。  
+汇编：将编译后的汇编程序翻译成二进制文件(即`目标文件`)。  
+链接：将目标文件链接库，生成`可执行文件`。  
+
+## 使用gcc/g++编译  
+
+使用gcc/g++编译器编译一个文件，只需在命令行中输入(以g++为例)
 ```
-//hello_world.cpp
-#include<iostream>
-int main(){
-    std::cout<<"Hello world!"<<std::endl;
-}
+g++ main.cpp -o test
 ```
-在同一目录下，有CMakeLists.txt如下：
+便可以得到一个名为test的可执行文件，然后执行：
 ```
-#CMakeLists.txt
-cmake_minimum_required(VERSION 3.10)
-project(Hello_world)
-add_executable(Hello_world hello_world.cpp)
+./test
 ```
-为了保证源码路径的干净整洁，在当前目录下创建一个build目录，存放构建项目产生的编译产物，这种方式叫作外部构建。反之，把编译产物存放在当前目录中叫作内部构建。  
 
-现在准备工作完成，开始构建。在build目录下输入以下语句，以生成构建系统：
-```
-cmake ..
-```
- `..` 表示CMakeLists.txt文件在上一级目录。  
+## gcc/g++ 创建库  
 
- 此时，继续输入：
- ```
- cmake --build .
- ```
- 执行此命令后，将生成可执行文件，其中 `--build` 指明可执行文件的存放目录， `.` 表示当前目录。  
-
- 输入命令执行：
- ```
- ./Hello_world
- ```
- 便可得到输出 Hello world!  
-
-## 2.创建库
-
-Linux下静态库以.a为后缀结尾，动态库以.so为后缀结尾，二者最本质的区别是`打进可执行文件的时机不同`。静态库是在链接阶段打进可执行文件，而动态库是在可执行文件运行的时候才加载进来的。静态库的优点是文件执行快，但是缺点也很明显就是多消耗了内存空间，动态库刚好相反，节省了内存空间，但是需要花费时间在运行的时候加载库。
-
-现有test1目录结构如下  
-├── CMakeLists.txt　　　　　　#父目录的CMakeList.txt  
-├── main.cpp　　　　　　　　#源文件，包含main函数  
-├── sub　　　　　　　　　　#子目录    
- └── CMakeLists.txt　　　　#子目录的CMakeLists.txt  
+有目录test1内结构如下  
+├── main.cpp　　　　　　　#源文件，包含main函数  
+├── sub　　　　　　　　　#子目录    
  └── print.h　　　　　　　#子目录头文件  
- └── print.cpp　　　　　　#子目录源文件  
+ └── print.cpp　　　　　　#子目录源文件   
+
 
 print.h中的内容如下  
 ```
@@ -92,7 +71,59 @@ int main(){
 }  
 ```
 
-sub目录下，CMakeLists.txt  
+### 参数-I 头文件搜索路径
+使用`g++ main.cpp -o test`命令对上面的文件main.cpp进行编译会得到一个错误 —— 头文件print未声明。这是因为编译器按照默认的头文件搜索路径找不到头文件print，解决的办法是使用参数`-I`告诉编译器，按照指定的路径查找头文件，具体命令如下：  
+```
+g++ main.cpp sub/print.cpp -Isub -o test
+```
+自定义的搜索路径紧跟在`-I`的后面，这样便可以得到可执行文件。  
+
+
+
+### 静态库 动态库
+首先说明一下静态库和动态库的区别：Linux下静态库以.a为后缀结尾，动态库以.so为后缀结尾，而二者最本质的区别是`打进可执行文件的时机不同`。静态库是在链接阶段打进可执行文件，而动态库是在可执行文件运行的时候才加载进来的。静态库的优点是文件执行快，但是缺点也很明显就是多消耗了内存空间，动态库刚好相反，节省了内存空间，但是需要花费时间在运行的时候加载库。  
+
+
+下面说明如何创建库，先是静态库。  
+静态库实则是一个二进制目标文件，链接时直接打进可执行文件。知道了原理就好操作了，首先生成一个.o的二进制文件：
+```
+g++ sub/print.cpp -Isub -c -o print.o
+```
+>`-c`参数表示只进行预处理、编译、汇编操作，从而得到一个.o的文件  
+
+然后将这个二进制目标文件归档为.a的静态库。库的命名格式为`lib+库名+后缀`。下面使用`ar`命令创建一个名为print的静态库：
+```
+ar rs libprint.a print.o
+```
+至此，静态库创建完毕，下面将库链接到main.cpp中：
+```
+g++ main.cpp -Isub -L. -lprint -o test
+```
+得到了可执行文件test。其中，命令需要使用-I指明头文件搜索路径sub，使用-L指明库的搜索路径(当前目录下用 . 表示)，使用-l指明库的名称。   
+
+
+下面是动态库(又称共享库)  
+执行命令：
+```
+g++ sub/print.cpp -Isub -fPIC -shared -o libprint.so
+```
+`-fPIC`编译选项，表示生成位置无关的代码，就是说代码可以在任意位置执行，这是动态库需要的特性。`-shared`链接选项，告诉编译器生成动态库而不是可执行文件。所以上面的命令也可以分两步完成：
+```
+g++ sub/print.cpp -Isub -c -fPIC -o print.o
+g++ print.o -shared -o libprint.so
+```
+然后和静态库一样，链接到main.cpp中：
+```
+g++ main.cpp -Isub -L. -lprint -o test
+```
+
+
+## cmake 创建库
+接下来使用cmake建立一个动态库和静态库，完成gcc/g++对应的操作。
+
+#### 建立静态库
+在test1目录下，新建子目录sub  
+进入sub目录，新建CMakeLists.txt  
 ```
 #sub/CMakeLists.txt
 cmake_minimum_required(VERSION 3.10)  
@@ -100,7 +131,7 @@ project(sub)
 add_library(print STATIC print.cpp)  
 ```
 
-顶层CMakeLists.txt 
+回到test1，新建CMakeLists.txt 
 ```
 #test1/CMakeLists.txt  
 cmake_minimum_required(VERSION 3.10)  
@@ -110,6 +141,14 @@ add_subdirectory(sub)
 add_executable(main main.cpp) 
 target_link_libraries(main print)  
 ```
+
+当前目录结构如下  
+├── CMakeLists.txt　　　　　　#父目录的CMakeList.txt  
+├── main.cpp　　　　　　　　#源文件，包含main函数  
+├── sub　　　　　　　　　　#子目录    
+ └── CMakeLists.txt　　　　#子目录的CMakeLists.txt  
+ └── print.h　　　　　　　#子目录头文件  
+ └── print.cpp　　　　　　#子目录源文件  
 
 其中，add_library(print STATIC print.cpp)的含义是将指定的源文件print.cpp生成链接文件，然后添加到工程中。  
 命令格式  
@@ -191,3 +230,12 @@ cmake --build .
 ```
 hello world
 ```
+
+### 创建动态库
+创建动态库只需要在sub/CmakeList.txt中改写一行即可：
+```
+add_library(print SHARED print.cpp)  
+```
+
+## 结语
+使用gcc/g++编译器或者cmake都可以对一个文件进行编译，其中g++是一步一步的进行编译，更利于对编译过程的理解，而cmake编译一个文件可以说一步到位，十分方便简单。
