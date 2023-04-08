@@ -1,5 +1,5 @@
 +++
-author = ""
+author = "baoguli"
 title = "C++引用"
 date = "2023-4-5"
 description = "简述C++的引用"
@@ -24,7 +24,7 @@ image = ""
 int ival=0;
 int &refVal=ival;       //refVal指向ival
 int &refVal2;           //错误：引用必须被初始化
-int &refVal3=&refVal;   //引用refVal引用的对象
+int &refVal3=refVal;   //引用refVal引用的对象
 refVal=1;               //如同ival=1
 ```
 
