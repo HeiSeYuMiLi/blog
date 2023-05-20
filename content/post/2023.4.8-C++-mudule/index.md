@@ -5,7 +5,6 @@ date = "2023-4-8"
 description = "Custom Test Page"
 tags = [
     "c++",
-    "module",
 ]
 categories = [
     "syntax",

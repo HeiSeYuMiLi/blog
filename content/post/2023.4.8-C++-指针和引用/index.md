@@ -5,8 +5,6 @@ date = "2023-4-8"
 description = "介绍指针和引用的区别"
 tags = [
     "c++",
-    "指针",
-    "引用",
 ]
 categories = [
     "syntax",

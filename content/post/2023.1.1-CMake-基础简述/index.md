@@ -4,7 +4,6 @@ title = "CMake基础简述"
 date = "2023-1-1"
 description = "简述CMake的基本使用方法"
 tags = [
-    "markdown",
     "cmake",
 ]
 categories = [

@@ -5,8 +5,6 @@ date = "2023-4-5"
 description = "简述C++的引用"
 tags = [
     "c++",
-    "引用",
-    "左值、右值",
 ]
 categories = [
     "themes",
