@@ -1,13 +1,12 @@
 +++
 author = "baoguli"
-title = "创建库"
+title = "CMake创建库"
 date = "2022-10-28"
-description = "使用gcc/g++和cmake创建静态库和动态库"
+description = "使用cmake创建静态库和动态库"
 tags = [
     "cmake",
 ]
 categories = [
-    "themes",
     "syntax",
 ]
 aliases = ["create-library"]

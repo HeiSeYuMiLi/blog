@@ -1,17 +1,12 @@
 +++
 author = ""
-title = "创建库"
+title = "CMake与gcc/g++"
 date = "2022-10-28"
 description = "使用gcc/g++和cmake创建静态库和动态库"
 tags = [
-    "markdown",
     "cmake",
-    "gcc/g++",
-    "静态库",
-    "动态库",
 ]
 categories = [
-    "themes",
     "syntax",
 ]
 aliases = ["create-library"]
