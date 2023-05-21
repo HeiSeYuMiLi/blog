@@ -4,7 +4,6 @@ title = "初识网络编程"
 date = "2023-5-18"
 description = "Custom Test Page"
 tags = [
-    "c++",
     "网络编程",
 ]
 categories = [
