@@ -17,17 +17,23 @@ image = ""
 编译一个文件，一共有四个步骤：预处理，编译，汇编，链接。  
 
 预处理：将文件包含的头文件和宏定义等展开或替换。  
+
 编译：将预处理后的文件翻译成更底层的`汇编语言`。  
+
 汇编：将编译后的汇编程序翻译成二进制文件(即`目标文件`)。  
+
 链接：将目标文件链接库，生成`可执行文件`。  
 
 ## 使用gcc/g++编译  
 
 使用gcc/g++编译器编译一个文件，只需在命令行中输入(以g++为例)
+
 ```
 g++ main.cpp -o test
 ```
+
 便可以得到一个名为test的可执行文件，然后执行：
+
 ```
 ./test
 ```
@@ -42,14 +48,16 @@ g++ main.cpp -o test
 
 
 print.h中的内容如下  
-```
+
+```C++
 // sub/print.h  
 #include<iostream>  
 void print(std::string str);  
 ```
 
 print.cpp中的内容如下  
-```
+
+```C++
 // sub/print.cpp  
 #include "print.h"  
 void print(std::string str){  
@@ -58,7 +66,7 @@ void print(std::string str){
 ```
 
 main.cpp中的内容如下   
-```
+```C++
 // main.cpp  
 #include "print.h"  
 int main(){  
@@ -119,7 +127,7 @@ g++ main.cpp -Isub -L. -lprint -o test
 #### 建立静态库
 在test1目录下，新建子目录sub  
 进入sub目录，新建CMakeLists.txt  
-```
+```makefile
 #sub/CMakeLists.txt
 cmake_minimum_required(VERSION 3.10)  
 project(sub)  
@@ -127,7 +135,7 @@ add_library(print STATIC print.cpp)
 ```
 
 回到test1，新建CMakeLists.txt 
-```
+```makefile
 #test1/CMakeLists.txt  
 cmake_minimum_required(VERSION 3.10)  
 project(test)  
@@ -147,7 +155,7 @@ target_link_libraries(main print)
 
 其中，add_library(print STATIC print.cpp)的含义是将指定的源文件print.cpp生成链接文件，然后添加到工程中。  
 命令格式  
-```
+```makefile
 add_library(<name> [STATIC | SHARED | MODULE]  
             [EXCLUDE_FROM_ALL]  
             [source1] [source2] [...])    
@@ -167,7 +175,7 @@ source1 source1 ...
 
 include_directories("${PROJECT_SOURCE_DIR}/sub")表示将指定目录添加到编译器的头文件搜索路径之下  
 命令格式  
-```
+```makefile
 include_directories ([AFTER|BEFORE] [SYSTEM] dir1 [dir2 ...])  
 ```
 
@@ -183,7 +191,7 @@ SYSTEM
 
 add_subdirectory(sub)表示添加一个子目录sub并构建该子目录。  
 命令格式  
-```
+```makefile
 add_subdirectory (source_dir [binary_dir] [EXCLUDE_FROM_ALL])   
 ```
 
@@ -197,7 +205,7 @@ EXCLUDE_FROM_ALL
 
 target_link_libraries(main print)表示将目标文件main与库文件print进行链接。  
 命令格式  
-```
+```makefile
 target_link_libraries(<target> [item1] [item2] [...])   
 ```
 
@@ -206,7 +214,7 @@ target_link_libraries 要写在 add_executable 之后。
 <target>是指通过add_executable()或add_library()指令生成已经创建的目标文件。[item]表示库文件。  
 target_link_libraries里库文件的顺序符合gcc链接顺序的规则，即被依赖的库放在依赖它的库的后面，比如  
 
-```
+```makefile
 target_link_libraries(hello A.so B.a C.so)  
 ```
 
@@ -228,7 +236,7 @@ hello world
 
 ### 创建动态库
 创建动态库只需要在sub/CmakeList.txt中改写一行即可：
-```
+```makefile
 add_library(print SHARED print.cpp)  
 ```
 
