@@ -18,7 +18,7 @@ image = ""
 
 **引用**即对象的别名，它并不是一个新的对象。定义引用后，程序将引用和它的初始值**绑定**在一起，对引用的所有操作都在绑定的对象上发生。
 
-```
+```C++
 int ival=0;
 int &refVal=ival;       //refVal指向ival
 int &refVal2;           //错误：引用必须被初始化
@@ -32,7 +32,7 @@ refVal=1;               //如同ival=1
 
 简单地说，左值是可以取地址、有名字的值，一般的，左值在等号的左边(没有const声明时)；右值是不可取地址、没有名字的值，所以临时变量都是右值。
 
-```
+```C++
 std::string str=std::string{"hello"};
 ```
 
@@ -44,7 +44,7 @@ std::string str=std::string{"hello"};
 
 上面所说的引用就是左值引用。左值引用就是指向左值的引用，在const修饰下可以指向右值。
 
-```
+```C++
 const std::string &str2=std::string{"hello"};
 ```
 
@@ -52,14 +52,14 @@ const std::string &str2=std::string{"hello"};
 
 为了实现移动语义，c++11引入了右值引用的概念。定义方式为 `type &&d` 。右值引用就是指向右值的引用，不可以指向左值。
 
-```
+```C++
 std::string &&str3=std::string{"hello"};
 std::string &&str4=str;    //error
 ```
 
 ### 右值引用实现移动语义
 
-```
+```C++
 #include<iostream>
 
 class A {
@@ -95,7 +95,7 @@ int main() {
 
 **std::move** 的意思应该是转换而非移动，它可以将实参的类型转换成右值引用。
 
-```
+```C++
 a=std::move(b);  //移动赋值
 ```
 
@@ -107,7 +107,7 @@ a=std::move(b);  //移动赋值
 
 这时候就有了万能引用： T&& 。
 
-```
+```C++
 #include<iostream>
 
 template<typename T>
@@ -128,7 +128,7 @@ int main(){
 
 与万能引用类似，它并不表示右值引用，而是根据初始值的类型进行推导，若初始值是一个左值，则表示左值引用；若初始值是一个右值，则表示右值引用。
 
-```
+```C++
 int a=100;
 auto&& b=a;     //b为左值引用
 auto&& c{100};  //c为右值引用

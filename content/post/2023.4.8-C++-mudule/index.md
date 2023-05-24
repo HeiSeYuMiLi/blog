@@ -58,7 +58,7 @@ export关键字用于
 
 
 例： 
-```
+```C++
 // Module2.ixx  
   
 export module Module2;  
@@ -86,7 +86,7 @@ import关键字用于导入声明
 
 例：
 
-```
+```C++
 //main.cpp  
 #include<iostream>  
 import std.core;  

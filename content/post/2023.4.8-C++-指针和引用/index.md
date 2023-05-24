@@ -28,7 +28,7 @@ image = ""
 
 举例：
 
-```
+```C++
 int num=1;
 
 int* p=&num;

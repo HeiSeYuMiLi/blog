@@ -1,5 +1,5 @@
 +++
-author = ""
+author = "baoguli"
 title = "CMake基础简述"
 date = "2023-1-1"
 description = "简述CMake的基本使用方法"
@@ -7,7 +7,6 @@ tags = [
     "cmake",
 ]
 categories = [
-    "themes",
     "syntax",
 ]
 aliases = ["create-library"]
@@ -37,7 +36,7 @@ CMake就是用来makefile的一个工具：读入所有源文件之后，自动�
 
 使用CMake构建一个最简单的项目莫过于将一个源文件构建成一个可执行文件。有源文件如下：
 
-```
+```C++
 //main.cpp
 #include<iostream>
 int main(){
@@ -47,7 +46,7 @@ int main(){
 
 在同一目录下，有CMakeLists.txt如下：
 
-```
+```makefile
 #CMakeLists.txt
 cmake_minimum_required(VERSION 3.10)
 
@@ -89,13 +88,13 @@ cmake --build .
 
 例如指定c++11，只需要在CMakeLists.txt里添加：
 
-```
+```makefile
 set(CMAKE_CXX_STANDARD 11)
 ```
 
 ### 添加版本号和配置的头文件
 
-```
+```makefile
 cmake_minimum_required(VERSION 3.10)
 
 # 设置工程名
@@ -120,7 +119,7 @@ target_include_directories(Tutorial PUBLIC "${PROJECT_BINARY_DIR}")
 
 头文件TotorialConfig.h.in的内容：
 
-```
+```C++
 // 与tutorial相关的配置好的选项与设置；
 #define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
 #define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
@@ -147,7 +146,7 @@ Linux下静态库以.a为后缀结尾，动态库以.so为后缀结尾，二者�
 
 print.h中的内容如下  
 
-```
+```C++
 // sub/print.h  
 #include<iostream>  
 void print(std::string str);  
@@ -155,7 +154,7 @@ void print(std::string str);
 
 print.cpp中的内容如下  
 
-```
+```C++
 // sub/print.cpp  
 #include "print.h"  
 void print(std::string str){  
@@ -165,7 +164,7 @@ void print(std::string str){
 
 main.cpp中的内容如下   
 
-```
+```C++
 // main.cpp  
 #include "print.h"  
 int main(){  
@@ -175,7 +174,7 @@ int main(){
 
 sub目录下，CMakeLists.txt  
 
-```
+```makefile
 #sub/CMakeLists.txt
 
 # 将指定的源文件print.cpp生成静态库  然后添加到工程中 STATIC(静态库) SHARED(动态库) MODULE(模块库)
@@ -184,7 +183,7 @@ add_library(print STATIC print.cpp)
 
 顶层CMakeLists.txt 
 
-```
+```makefile
 #test1/CMakeLists.txt  
 cmake_minimum_required(VERSION 3.10)  
 project(test)  
@@ -208,7 +207,7 @@ target_link_libraries(main print)
 
 在大工程中，对于更大型的库或者依赖于第三方代码的库，你可能需要将库变为可选的。修改顶层 CMakeLists.txt：
 
-```
+```makefile
 # 设置option 相当于宏
 # 定义选项默认状态，一般是OFF或者ON，除去ON之外，其他所有值(不赋值)都认为是OFF
 option(USE_LIBRARY "Use Library" ON) 
@@ -227,7 +226,7 @@ target_link_libraries(main  ${EXTRA_LIBS})
 
 同时，main.cpp源码中也要做出改变，具体如下：
 
-```
+```C++
 // main.cpp 
 #ifdef USE_LIBRARY 
 #include "print.h"  
@@ -246,7 +245,7 @@ int main(){
 
 为了让 `main.cpp` 可以使用 `USE_LIBRARY` ，我们还要在 **TutorialConfig.h.in** 配置文件中添加一句话：
 
-```
+```C++
 #cmakedefine USE_LIBRARY
 ```
 
@@ -256,7 +255,7 @@ int main(){
 
 在sub子目录下，添加一个add.c文件如下：
 
-```
+```C++
 #include <stdio.h>
 
 int main(int argc, char *argv[]){
@@ -268,7 +267,7 @@ int main(int argc, char *argv[]){
 
 接下来需要在 sub 的 CMakeLists.txt 文件中添加合适的命令来生成可执行文件 add ，然后作为构建过程的一部分来运行它，需要一些命令来完成此任务，代码如下：
 
-```
+```makefile
 add_executable(add add.c)
 
 # 添加自定义命令
@@ -304,7 +303,7 @@ add_custom_command():添加自定义命令，第一个签名 OUTPUT 指定生成
 
 下一步我们会为我们的工程引入安装规则以及测试支持。安装规则相当直白，对于print库，我们通过向sub的CMakeLists文件添加如下两条语句来设置要安装的库以及头文件：
 
-```
+```makefile
 install (TARGETS print DESTINATION bin)
 install (FILES print.h DESTINATION include)
 ```
@@ -313,7 +312,7 @@ install (FILES print.h DESTINATION include)
 
 ### 添加安装目标
 
-```
+```makefile
 install (TARGETS main DESTINATION bin)
 install (FILES "${PROJECT_BINARY_DIR}/mainConfig.h" DESTINATION include)
 ```

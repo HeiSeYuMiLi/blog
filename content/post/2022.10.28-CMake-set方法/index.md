@@ -1,5 +1,5 @@
 +++
-author = ""
+author = "baoguli"
 title = "CMake set方法"
 date = "2022-10-28"
 description = "使用set创建变量"
@@ -30,7 +30,7 @@ set方法用于给下面的变量赋值
 
 下面是一些实例：  
 (1)首先，设置一个变量，并给定一个值  
-```
+```makefile
 set(normal_var hello)
 message("value = ${normal_var}")
 ```
@@ -40,7 +40,7 @@ value = hello
 ```  
 
 (2)设置一个变量，给定多个值  
-```
+```makefile
 set(normal_var hello world)
 message("value = ${normal_var}")
 ```
@@ -51,7 +51,7 @@ value = hello;world
 给一个变量设定多个值后，它输出的结果是用分号 `;` 隔开的。  
 
 (3)设置一个变量，使用 `PARENT_SCOPE` 选项
-```
+```makefile
 set(normal_var hello world PARENT_SCOPE)
 message("value = ${normal_var}")
 ```
@@ -62,7 +62,7 @@ value =
 可以看到，使用了 `PARENT_SCOPE` 选项后，变量 `normal_var` 的作用域被`传递`到上一层。注意，这里说的是传递，而不是拓宽，所以在当前目录下，输出变量失败。  
 
 (4)在一个函数中设置一个变量，使用 `PARENT_SCOPE` 选项
-```
+```makefile
 function(test_func1 arg)
 	set(normal_var ${arg} PARENT_SCOPE)
 	message("value = ${normal_var}")
@@ -75,7 +75,7 @@ test_func1(hello)
 value =
 ```
 在另一个函数中调用该函数
-```
+```makefile
 function(test_func1 arg)
 	set(normal_var ${arg} PARENT_SCOPE)
 	message("value1 = ${normal_var}")
@@ -96,7 +96,7 @@ value2 = hello
 可以看到，test_func1 函数的调用者 test_func2 可以访问变量 normal_var。  
 
 (5)变量作用域在目录中传递  
-```
+```makefile
 # /sub/CMakeLists.txt
 cmake_minimum_required(VERSION 3.0)
 project(sub)
@@ -104,7 +104,7 @@ project(sub)
 set(normal_var hello PARENT_SCOPE)
 message("value1 = ${normal_var}")
 ```
-```
+```makefile
 # /CMakeLists.txt
 cmake_minimum_required(VERSION 3.0)
 project(test)
@@ -135,7 +135,7 @@ value2 = hello
 
 下面是几个实例：  
 (1)缓存变量是可以跨层访问的变量
-```
+```makefile
 # /CMakeLists.txt
 cmake_minimum_required(VERSION 3.10)
 project(test)
@@ -144,7 +144,7 @@ add_subdirectory(sub)
 set(cache_var ON CACHE BOOL "BOOL")
 message("value = ${cache_var}")
 ```
-```
+```makefile
 # /sub/CMakeLists.txt
 cmake_minimum_required(VERSION 3.10)
 project(sub)
@@ -160,7 +160,7 @@ value = ON
 
 (2)使用 `FORCE` 强制修改变量的值  
 我们把上一个例子的sub标签下的CMakeLists.txt修改一下
-```
+```makefile
 cmake_minimum_required(VERSION 3.10)
 project(sub)
 
@@ -173,7 +173,7 @@ value2 = OFF
 value = OFF
 ```
 (3)使用 `-D` 选项修改变量的值
-```
+```makefile
 cmake_minimum_required(VERSION 3.10)
 project(test)
 
@@ -199,7 +199,7 @@ value = OFF
 (2)如果 `<value>` 值为空或者 `ENV{<variable>}` 后没有参数，则该命令会清除掉当前环境变量的值。  
 (3)`<value>` 后的参数会被忽略。  
 
-```
+```makefile
 cmake_minimum_required (VERSION 3.10.2)
 project (set_test)
 
