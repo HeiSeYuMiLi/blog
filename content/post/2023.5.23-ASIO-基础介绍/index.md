@@ -52,12 +52,16 @@ int server_endpoint() {
 }
 ```
 
+服务端可以不指明地址，而是接收任何地址，如 tcp::v4() 、 tcp::v6() 等等。
+
 ### 创建 socket
 
 ```C++
 boost::asio::io_context ioc;
 boost::asio::ip::tcp::socket sock(ioc);
 ```
+
+**io_context** ( 之前的版本是 io_service ) 对象是 asio 框架中的调度器，所有的异步事件都是通过它来分发处理的。
 
 ### 创建接收器 acceptor
 
@@ -68,6 +72,8 @@ int create_acceptor_socket() {
 	return 0;
 }
 ```
+
+服务端打开端口，使用接收器监听，属于被动连接。
 
 ### 客户端通过端点进行连接
 
@@ -88,6 +94,8 @@ int client_connect_to_end() {
 	return 0;
 }
 ```
+
+客户端主动连接指定端点的服务端。
 
 ### 客户端通过域名连接
 
