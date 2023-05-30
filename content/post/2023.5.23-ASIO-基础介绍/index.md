@@ -150,7 +150,34 @@ int acceptor_accept_connection() {
 
 ### 处理发送的数据
 
-ASIO发送的数据有特定的格式，使用 boost::asio::buffer 函数可以将任何格式的数据转换成特定的格式。
+Boost.Asio 使用 asio::mutable_buffer 和 asio::const_buffer 这两个结构来提供 buffer ，它们是一段连续的空间，首字节存储了后续数据的长度。
+
+asio::mutable_buffer 用于写服务，asio::const_buffer 用于读服务。但是这两个结构都没有被 Asio 的 api 直接使用。
+
+对于 api 的 buffer 参数，Asio 提出了 MutableBufferSequence 和 ConstBufferSequence 概念，它们是由多个 asio::mutable_buffer 和 asio::const_buffer 组成的。也就是说boost::asio为了节省空间，将一部分连续的空间组合起来，作为参数交给api使用。
+
+我们可以理解为 MutableBufferSequence 的数据结构为 std::vector<boost::asio::mutable_buffer>
+
+每个 vector 存储的都是 mutable_buffer 的地址，每个 mutable_buffer 的第一个字节表示数据的长度，后面跟着数据内容。
+
+这么复杂的结构交给用户使用并不合适，所以 Asio 提出了 buffer() 函数，该函数接收多种形式的字节流，该函数返回 asio::mutable_buffers_1 或者 asio::const_buffers_1 结构的对象。
+
+如果传递给 buffer() 的参数是一个只读类型，则函数返回 asio::const_buffers_1 类型对象。
+
+如果传递给 buffer() 的参数是一个可写类型，则返回 asio::mutable_buffers_1 类型对象。
+
+asio::const_buffers_1 和 asio::mutable_buffers_1 是 asio::mutable_buffer 和 asio::const_buffer 的适配器，提供了符合 MutableBufferSequence 和 ConstBufferSequence 概念的接口，所以它们可以作为 boost::asio 的 api 函数的参数使用。
+
+简单概括一下，我们可以用 buffer() 函数生成我们要用的缓存存储数据。
+
+比如 boost 的发送接口 send 要求的参数为 ConstBufferSequence 类型
+
+```C++
+template<typename ConstBufferSequence>
+std::size_t send(const ConstBufferSequence & buffers);
+```
+
+我们需要将 hello World 转化为该类型
 
 ```C++
 void use_const_buffer() {
