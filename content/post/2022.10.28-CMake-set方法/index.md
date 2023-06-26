@@ -35,7 +35,7 @@ set(normal_var hello)
 message("value = ${normal_var}")
 ```
 输出：
-```
+```bash
 value = hello
 ```  
 
@@ -45,7 +45,7 @@ set(normal_var hello world)
 message("value = ${normal_var}")
 ```
 输出：
-```
+```bash
 value = hello;world
 ```
 给一个变量设定多个值后，它输出的结果是用分号 `;` 隔开的。  
@@ -56,7 +56,7 @@ set(normal_var hello world PARENT_SCOPE)
 message("value = ${normal_var}")
 ```
 输出：
-```
+```bash
 value =
 ```
 可以看到，使用了 `PARENT_SCOPE` 选项后，变量 `normal_var` 的作用域被`传递`到上一层。注意，这里说的是传递，而不是拓宽，所以在当前目录下，输出变量失败。  
@@ -71,7 +71,7 @@ endfunction(test_func1)
 test_func1(hello)
 ```
 输出：
-```
+```bash
 value =
 ```
 在另一个函数中调用该函数
@@ -89,7 +89,7 @@ endfunction(test_func2)
 test_func2(hello) 
 ```
 输出：
-```
+```bash
 value1 =
 value2 = hello
 ```
@@ -113,7 +113,7 @@ add_subdirectory(sub)
 message("value2 = ${normal_var}")
 ```
 输出：
-```
+```bash
 value1 =
 value2 = hello
 ```  
@@ -152,7 +152,7 @@ project(sub)
 message("value2 = ${cache_var}")
 ```
 输出：
-```
+```bash
 value2 = ON
 value = ON
 ```
@@ -168,7 +168,7 @@ set(cache_var OFF CACHE BOOL "BOOL" FORCE)
 message("value2 = ${cache_var}")
 ```
 输出：
-```
+```bash
 value2 = OFF
 value = OFF
 ```
@@ -181,11 +181,11 @@ set(cache_var ON CACHE BOOL "BOOL")
 message("value = ${cache_var}")
 ```
 在使用cmake创建的时候输入命令：
-```
+```bash
 cmake . -Dcache_var=OFF
 ```
 输出：
-```
+```bash
 value = OFF
 ```
 >注意：变量名是紧跟在 `-D` 的后面的  
@@ -214,7 +214,7 @@ set (ENV{CMAKE_PREFIX_PATH} "")
 message ("value = $ENV{CMAKE_PREFIX_PATH}")
 ```
 输出：
-```
+```bash
 >>> value =
 >>> value = /test/sub
 >>> value =

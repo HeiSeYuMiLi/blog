@@ -28,13 +28,13 @@ image = ""
 
 使用gcc/g++编译器编译一个文件，只需在命令行中输入(以g++为例)
 
-```
+```bash
 g++ main.cpp -o test
 ```
 
 便可以得到一个名为test的可执行文件，然后执行：
 
-```
+```bash
 ./test
 ```
 
@@ -76,7 +76,7 @@ int main(){
 
 ### 参数-I 头文件搜索路径
 使用`g++ main.cpp -o test`命令对上面的文件main.cpp进行编译会得到一个错误 —— 头文件print未声明。这是因为编译器按照默认的头文件搜索路径找不到头文件print，解决的办法是使用参数`-I`告诉编译器，按照指定的路径查找头文件，具体命令如下：  
-```
+```bash
 g++ main.cpp sub/print.cpp -Isub -o test
 ```
 自定义的搜索路径紧跟在`-I`的后面，这样便可以得到可执行文件。  
@@ -89,17 +89,17 @@ g++ main.cpp sub/print.cpp -Isub -o test
 
 下面说明如何创建库，先是静态库。  
 静态库实则是一个二进制目标文件，链接时直接打进可执行文件。知道了原理就好操作了，首先生成一个.o的二进制文件：
-```
+```bash
 g++ sub/print.cpp -Isub -c -o print.o
 ```
 >`-c`参数表示只进行预处理、编译、汇编操作，从而得到一个.o的文件  
 
 然后将这个二进制目标文件归档为.a的静态库。库的命名格式为`lib+库名+后缀`。下面使用`ar`命令创建一个名为print的静态库：
-```
+```bash
 ar rs libprint.a print.o
 ```
 至此，静态库创建完毕，下面将库链接到main.cpp中：
-```
+```bash
 g++ main.cpp -Isub -L. -lprint -o test
 ```
 得到了可执行文件test。其中，命令需要使用-I指明头文件搜索路径sub，使用-L指明库的搜索路径(当前目录下用 . 表示)，使用-l指明库的名称。   
@@ -107,16 +107,16 @@ g++ main.cpp -Isub -L. -lprint -o test
 
 下面是动态库(又称共享库)  
 执行命令：
-```
+```bash
 g++ sub/print.cpp -Isub -fPIC -shared -o libprint.so
 ```
 `-fPIC`编译选项，表示生成位置无关的代码，就是说代码可以在任意位置执行，这是动态库需要的特性。`-shared`链接选项，告诉编译器生成动态库而不是可执行文件。所以上面的命令也可以分两步完成：
-```
+```bash
 g++ sub/print.cpp -Isub -c -fPIC -o print.o
 g++ print.o -shared -o libprint.so
 ```
 然后和静态库一样，链接到main.cpp中：
-```
+```bash
 g++ main.cpp -Isub -L. -lprint -o test
 ```
 
@@ -223,14 +223,14 @@ target_link_libraries(hello A.so B.a C.so)
 
 完成上面的操作后，在test1目录下新建build文件夹，然后进入  
 使用cmake .. 指令构建，并执行可执行文件  
-```
+```bash
 cmake ..
 cmake --build .
 ./main  
 ```
 
 便可以得到输出  
-```
+```bash
 hello world
 ```
 

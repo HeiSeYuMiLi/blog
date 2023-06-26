@@ -38,7 +38,7 @@ add_executable(Hello_world hello_world.cpp)
 
 现在准备工作完成，开始构建。在build目录下输入以下语句，以生成构建系统：
 
-```
+```bash
 cmake ..
 ```
 
@@ -46,7 +46,7 @@ cmake ..
 
  此时，继续输入：
 
- ```
+ ```bash
  cmake --build .
  ```
 
@@ -54,7 +54,7 @@ cmake ..
 
  输入命令执行：
 
- ```
+ ```bash
  ./Hello_world
  ```
 
@@ -126,7 +126,7 @@ target_link_libraries(main print)
 
 命令格式  
 
-```
+```bash
 add_library(<name> [STATIC | SHARED | MODULE]  
             [EXCLUDE_FROM_ALL]  
             [source1] [source2] [...])    
@@ -225,7 +225,7 @@ target_link_libraries(hello A.so B.a C.so)
 
 使用cmake .. 指令构建，并执行可执行文件  
 
-```
+```bash
 cmake ..
 cmake --build .
 ./main  
@@ -233,6 +233,6 @@ cmake --build .
 
 便可以得到输出  
 
-```
+```bash
 hello world
 ```
