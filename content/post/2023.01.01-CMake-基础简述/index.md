@@ -61,7 +61,7 @@ add_executable(Tutorial main.cpp)
 
 接下来，导航到该构建目录并运行 cmake 以配置项目并生成本机构建系统：
 
-```
+```bash
 cd build
 cmake ..
 ```
@@ -70,7 +70,7 @@ cmake ..
 
 然后调用该构建系统来实际编译/链接项目：
 
-```
+```bash
 cmake --build .
 ```
 
@@ -78,7 +78,7 @@ cmake --build .
 
 输入命令执行：
 
-```
+```bash
 ./Tutorial
 ```
 
