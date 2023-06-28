@@ -1,7 +1,7 @@
 +++
 author = "baoguli"
 title = "Boost.Asio的读接口"
-date = "2023-6-26"
+date = "2023-6-27"
 description = "简单聊聊Boost.Asio的读接口"
 tags = [
     "ASIO",
@@ -112,7 +112,7 @@ async_read_until 可以从一个流或者一个缓冲区中读取数据，直到
 
 下面是一个使用async_read_until函数的例子：
 
-```cpp
+```c++
 void read_handler(const boost::system::error_code &ec, std::size_t bytes_transferred)
 {
     if (!ec)
