@@ -14,7 +14,7 @@ image = ""
 +++  
 
 
-c++ 智能指针是一种对象，它可以像指针一样使用，但是它可以自动管理指向的资源的生命周期。c++ 智能指针可以避免手动分配和释放内存，防止内存泄漏和悬空指针。
+c++ 智能指针是一个类模板，它模仿原始指针的行为，可以像指针一样使用，但是它可以自动管理指向的资源的生命周期。c++ 智能指针可以避免手动分配和释放内存，防止内存泄漏和悬空指针。
 
 c++11 引入了三种智能指针类型，分别是：
 
@@ -32,6 +32,15 @@ unique_ptr 和 shared_ptr 是两种常用的 c++ 智能指针，它们的主要�
 - **删除器**：unique_ptr 可以自定义删除器（deleter），用于指定如何释放资源。shared_ptr 的删除器是保存在控制块中，不影响 shared_ptr 对象的大小。
 - **构造函数**：unique_ptr 没有类似 make_shared 的标准库函数返回一个 unique_ptr，必须使用 new 表达式或直接初始化来创建一个 unique_ptr。shared_ptr 可以使用 make_shared 函数来高效地创建一个 shared_ptr。
 - **析构行为**：unique_ptr 在析构时会调用所指对象的基类的析构函数，可能导致对象不完全销毁。shared_ptr 在析构时会调用所指对象的实际类型的析构函数，能够正确销毁对象。
+
+
+由此可知，unique_ptr 会比 shared_ptr 多一个参数用来指定删除器。
+
+```cpp
+template <class T, class D = default_delete<T>> class unique_ptr;
+```
+
+- unique_ptr 和 shared_ptr 之所以有这样的设计差异，是因为 unique_ptr 要求零开销，不需要额外存储删除器的信息。而 shared_ptr 本身就需要存储引用计数等信息，所以可以顺便存储删除器的信息。
 
 ### 循环引用问题
 
