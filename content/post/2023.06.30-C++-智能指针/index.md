@@ -1,10 +1,10 @@
 +++
 author = "baoguli"
-title = "字节序"
-date = "2023-6-29"
-description = "简单聊聊网络字节序"
+title = "智能指针"
+date = "2023-6-30"
+description = "简单聊聊c++智能指针"
 tags = [
-    "网络编程",
+    "c++",
 ]
 categories = [
     "syntax",
@@ -41,6 +41,15 @@ template <class T, class D = default_delete<T>> class unique_ptr;
 ```
 
 - unique_ptr 和 shared_ptr 之所以有这样的设计差异，是因为 unique_ptr 要求零开销，不需要额外存储删除器的信息。而 shared_ptr 本身就需要存储引用计数等信息，所以可以顺便存储删除器的信息。
+
+unique_ptr 通过以下手段实现零开销：
+
+- unique_ptr 只需要存储一个原始指针，用来指向资源。它不需要额外存储引用计数或删除器的信息。
+- unique_ptr 使用模板参数来指定资源的类型和删除器（deleter），用来释放资源的方式。如果删除器是一个空类（比如默认的std::default_delete），那么 unique_ptr 可以使用空基类优化（EBO）或空成员优化（EMO）来避免存储删除器的开销。
+- unique_ptr 禁止拷贝，只允许移动。这样就避免了拷贝构造函数和赋值运算符的开销。
+
+所以，unique_ptr 在大多数情况下是真的零开销，它和原始指针一样大小，一样快。但是，如果删除器不是一个空类，那么 unique_ptr 就会有一些额外的存储开销。
+
 
 ### 循环引用问题
 
